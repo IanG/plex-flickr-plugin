@@ -1,0 +1,64 @@
+{	
+	// Menu Captions and Summaries
+		
+	"PHOTOSTREAM_TITLE"						: "%s's Photostream",
+	"PHOTOSTREAM_SUMMARY"					: "View %s's recent photos, favorites, sets and tags.",
+	
+	"RECENT_TITLE"							: "%s's Recent Photos",
+	"RECENT_SUMMARY"						: "View %s's recent photographs.",
+
+	"FAVORITES_TITLE"						: "%s's Favorites",
+	"FAVORITES_SUMMARY"						: "View %s's favorite photos.",
+		
+	"SETS_TITLE"							: "%s's Sets",
+	"SETS_SUMMARY"							: "View %s's photo sets.",
+	
+	"TAGS_TITLE"							: "%s's Tags",
+	"TAGS_SUMMARY"							: "View %s's tags.",
+	
+	"CONTACTS_TITLE"						: "%s's Contacts",
+	"CONTACTS_SUMMARY"						: "View %s's contacts.",
+	
+	"GROUPS_TITLE"							: "%s's Groups",
+	"GROUPS_SUMMARY"						: "View %s's groups",
+	
+	"INTERESTINGNESS_TITLE"					: "Interestingness",
+	"INTERESTINGNESS_SUMMARY"				: "View interesting photos from the Flickr community.",
+	
+	"TAG_HOTLIST_TITLE"						: "Tag Hotlist",
+	"TAG_HOTLIST_SUMMARY"					: "View the most popular tags used by the Flickr community.",
+	
+	"PREFERENCES_TITLE"						: "Preferences...",
+	"PREFERENCES_SUMMARY"					: "Configure Flickr preferences.\n\nIf you wish to view your own Flickr photo stream you will need to configure your user details.",
+	
+	"ABOUT_TITLE"							: "About...",
+	
+	// Message Box Captions and Summaries
+	
+	"MESSAGE_NO_USER_SPECIFIED_TITLE"		: "Flickr User Not Defined",
+	"MESSAGE_NO_USER_SPECIFIED_SUMMARY"		: "Please configure your Flickr user on the plugin preferences screen.",
+	
+	"MESSAGE_NO_SET_SPECIFIED_TITLE"		: "Flickr Set Not Defined",
+	"MESSAGE_NO_SET_SPECIFIED_SUMMARY"		: "No photoset_id specified",
+	
+	"MESSAGE_NO_GROUP_SPECIFIED_TITLE"		: "Flickr Group Not Defined",
+	"MESSAGE_NO_GROUP_SPECIFIED_SUMMARY"	: "No group_id specified.",
+
+	"MESSAGE_SERVICE_ERROR_TITLE"			: "Flickr Service Error",
+	"MESSAGE_SERVICE_ERROR_SUMMARY"			: "The was a problem with the Flickr service.  Either your login credentials are incorrect, you have no internet connection or the Flickr service is actually down.",
+	
+	"MESSAGE_NO_TAGS_TITLE"					: "No Tags Found",
+	"MESSAGE_NO_TAGS_SUMMARY"				: "User %s has no tags.",
+	
+	"MESSAGE_NO_SETS_TITLE"					: "No Sets Found",
+	"MESSAGE_NO_SETS_SUMMARY"				: "User %s has no albums.",
+	
+	"MESSAGE_NO_CONTACTS_TITLE"				: "No Contacts Found",
+	"MESSAGE_NO_CONTACTS_SUMMARY"			: "User %s has no contacts.",
+	
+	"MESSAGE_NO_GROUPS_TITLE"				: "No Groups Found",
+	"MESSAGE_NO_GROUPS_SUMMARY"				: "User %s is not a member of any groups.",
+	
+	"MESSAGE_NO_PHOTOS_TITLE"				: "No Photos Found",
+	"MESSAGE_NO_PHOTOS_SUMMARY"				: "No photos were found" 
+}

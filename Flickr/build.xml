@@ -1,0 +1,192 @@
+<?xml version="1.0"?>
+<project basedir="." default="build" name="Flickr">
+	<description>
+		Plex Media Server Plugin build script.
+		--------------------------------------
+		
+		This ant build script can be used to build a Plugin for Plex Media Server
+		
+		It makes use of the pyAntTasks java package so that ant can complie phyton
+		see http://code.google.com/p/pyanttasks/
+		
+		Some notes on targets:
+		
+		dist		This will build the plugin bundle based on the Ant project name
+					and pull together all the libraries and resources for your project.
+		
+		release		Builds a .zip file containing the bundle ready to release
+		
+		deploy  	Will deploy your newly built plugin bundle into the Plex Media 
+					Server plugins directory.  Be careful the Plex server is not running
+					as this target does not check prior to going about its work.
+		
+		Some notes on properties
+		
+		See the plex.plugin.* property set defined below to configure how your plugin
+		is build, bundled and released.
+		
+		Ian.G
+	</description>
+
+	<!--  Add python task support to Ant -->
+
+	<taskdef resource="pyAntTasks.properties"/>
+
+	<!-- Define all properties used during the build and deploy process -->
+
+    <property name="lib.dir" location="${basedir}/lib" />
+	<property name="res.dir" location="${basedir}/res" />
+	<property name="locale.dir" location="${basedir}/locale" />
+	<property name="etc.dir" location="${basedir}/etc" />
+	<property name="src.dir" location="${basedir}/src" />
+	<property name="bin.dir" location="${basedir}/bin" />
+	<property name="dist.dir" location="${basedir}/dist" />
+	<property name="deploy.dir" location="${user.home}/Library/Application Support/Plex Media Server/Plug-ins" />
+	
+	<!-- Define properties for the Plex plugin -->
+
+	<property name="plex.plugin.id" value="Flickr" />
+	<property name="plex.plugin.title" value="Flickr"/>
+	<property name="plex.plugin.version" value="0.1"/>
+	
+	<!-- Init task to prepare the build environment -->
+	
+	<target name="init" description="Prepares the build environment">	
+		<echo message="Initialising ${ant.project.name} build environment" />
+		
+		<mkdir dir="${bin.dir}"/>
+			
+		<echo>lib.dir is ${lib.dir}</echo>
+		<echo>res.dir is ${res.dir}</echo>
+		<echo>locale.dir is ${locale.dir}</echo>
+		<echo>etc.dir is ${etc.dir}</echo>
+		<echo>src.dir is ${src.dir}</echo>
+		<echo>bin.dir is ${bin.dir}</echo>
+		<echo>dist.dir is ${dist.dir}</echo>
+		<echo>deploy.dir is ${deploy.dir}</echo>		
+	</target>
+
+	<!-- Clean the build environment -->
+
+	<target name="clean" description="Cleans the build environment">
+		<echo message="Cleaning ${ant.project.name} build environment" />
+		
+		<delete dir="${bin.dir}"/>
+		<delete dir="${dist.dir}"/>		
+	</target>
+
+	<!-- Compile python sources -->
+	
+	<target name="build" depends="clean">
+		<echo message="Compiling ${ant.project.name} python sources"/>
+		
+		<py-compile dir="${src.dir}" pythonpath="${src.dir}" optimize="0"/>
+	</target>
+
+	<!-- Build the distribution -->
+	
+	<target name="bundle" depends="build" description="builds the plugin bundle">
+		<property name="bundle.dir" location="${dist.dir}/${ant.project.name}.bundle"/>
+	
+		<echo message="Building ${ant.project.name} Plugin Distribution bundle..." />
+		<echo message="bundle name is ${bundle.dir}" />
+	
+		<!-- Create the main distribution directory -->
+	
+		<mkdir dir="${dist.dir}"/>
+					
+		<!-- Create the plugin bundle. -->
+	
+		<mkdir dir="${bundle.dir}" />
+		
+		<!-- Add in configuration -->
+		
+		<copy todir="${bundle.dir}/Contents">
+			<fileset dir="${etc.dir}">
+				<include name="**/*.*"/>
+			</fileset>
+		</copy>
+	
+		<!-- Add in the plugin source -->
+		
+		<copy todir="${bundle.dir}/Contents/Code">
+			<fileset dir="${src.dir}">
+			      <include name="**/*.py*"/>
+			</fileset>
+		</copy>
+	
+		<!-- Add in the required libraries -->
+	
+		<copy todir="${bundle.dir}/Contents/Libraries">
+			<fileset dir="${lib.dir}">
+				<include name="**/*.*"/>
+			</fileset>
+		</copy>
+
+		<!-- Add in locale-specific string tables -->
+	
+		<copy todir="${bundle.dir}/Contents/Strings">
+			<fileset dir="${locale.dir}">
+				<include name="**/*.*"/>
+			</fileset>
+		</copy>
+		
+		<!-- Add in the plugins resources -->
+
+		<copy todir="${bundle.dir}/Contents/Resources">
+			<fileset dir="${res.dir}">
+				<include name="**/*"/>
+				<exclude name="art-default.png"/>
+				<exclude name="art-about.png"/>
+			</fileset>
+		</copy>
+		
+		<echo message="Building Distribution bundle complete." />
+	</target>
+	
+	<!-- Builds a .zip file release for the plugin -->
+	
+	<target name="release" depends="bundle" description="Builds a .zip release for the plugin">
+		<zip destfile="${dist.dir}/${plex.plugin.id}.${plex.plugin.version}.zip">
+			<fileset dir="${dist.dir}">
+				<include name="**/*"/>
+			</fileset>
+		</zip>
+	</target>
+	
+	<!-- Deploys the plugin into Plex Media Server -->
+		
+	<target name="deploy" depends="bundle" description="Places the compiled plugin into Plex Media Server">
+		<echo message="Deploying ${ant.project.name}.bundle into Plex Media Server" /> 
+		
+		<!-- Don't deploy if the media server is running -->
+		
+		<!--
+		
+		This is not working - problem with running bash commands directly with this ant task
+		
+		<exec os="Mac OS X" failonerror="true" executable="bash" >
+			<arg value="-c"/>
+			<arg value="ps -ef | grep "Plex Media Server.app" | grep -v grep" />
+		</exec>
+		-->
+
+		<!-- Remove the existing plugin bundle -->
+		
+		<delete dir="${deploy.dir}/${ant.project.name}.bundle" />
+				
+		<!-- Create the new bundle directory -->
+		
+		<mkdir dir="${deploy.dir}/${ant.project.name}.bundle" />
+		
+		<!-- Deploy the new bundle into the plugins directory -->
+		
+		<copy todir="${deploy.dir}/${ant.project.name}.bundle">
+			<fileset dir="${dist.dir}/${ant.project.name}.bundle">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+		
+		<echo Message="Deployment Complete." />
+	</target>
+</project>
